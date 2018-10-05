@@ -175,10 +175,7 @@ handle_call({register_on_node, Key, Pid, Meta}, _From, State) ->
             end;
         
         Process when Process#syn_registry_table.pid =:= Pid ->
-            %% re-register (maybe different metadata?)
-            register_on_node(Key, Pid, node(), Meta),
-            %% return
-            {reply, ok, State};
+            {reply, {error, pid_already_registered}, State};
         
         _ ->
             {reply, {error, taken}, State}
